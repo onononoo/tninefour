@@ -1,6 +1,7 @@
 // tninefour — Copyright (C) 2026 kaiklund INC.
 // Free software under the GNU GPL v3 or later. See LICENSE.
 const { app, BrowserWindow, Menu, dialog, ipcMain, nativeTheme } = require('electron');
+const { autoUpdater } = require('electron-updater');
 const fs = require('fs/promises');
 const path = require('path');
 const hljs = require('@highlightjs/cdn-assets/highlight.min.js');
@@ -98,6 +99,12 @@ app.whenReady().then(() => {
     }) === 1) e.preventDefault();
   });
   win.loadFile('index.html');
+
+  // Installed copies update from the latest GitHub release: download in the background,
+  // show a notification, install when the app closes. The portable exe can't update itself.
+  if (app.isPackaged && !process.env.PORTABLE_EXECUTABLE_DIR) {
+    autoUpdater.checkForUpdatesAndNotify().catch(() => {}); // offline etc.: try again next launch
+  }
 });
 
 app.on('window-all-closed', () => app.quit());

@@ -39,9 +39,11 @@ foreach ($p in $pngs) { $w.Write($p) }
 # Start clean so old versions don't get shipped by mistake. NSIS can't create its output subfolder itself.
 if (Test-Path dist) { Remove-Item -Recurse -Force dist }
 New-Item -ItemType Directory -Force dist/installer, dist/portable | Out-Null
-npx electron-builder --win
+npx electron-builder --win --publish never
 if ($LASTEXITCODE) { exit $LASTEXITCODE }
 
-foreach ($exe in "installer/tninefour Setup $v", "portable/tninefour Portable $v") {
+foreach ($exe in "installer/tninefour-setup-$v", "portable/tninefour-portable-$v") {
   Compress-Archive -Force -Path "dist/$exe.exe", README.md, LICENSE -DestinationPath "dist/$exe.zip"
 }
+# Auto-update reads latest.yml from the GitHub release, so keep it next to the installer it describes.
+Move-Item dist/latest.yml dist/installer/

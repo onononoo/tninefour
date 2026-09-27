@@ -4,8 +4,8 @@ A simple, open source text editor for Windows that detects what language you're 
 
 ## Install
 
-- **Installer:** run `tninefour Setup <version>.exe` and follow the steps.
-- **Portable:** run `tninefour Portable <version>.exe`. Nothing is installed, so it can live anywhere, like a USB stick.
+- **Installer:** run `tninefour-setup-<version>.exe` and follow the steps. It updates itself when a new version comes out.
+- **Portable:** run `tninefour-portable-<version>.exe`. Nothing is installed, so it can live anywhere, like a USB stick. It doesn't update itself; download the new one from Releases.
 
 Windows may say "Windows protected your PC" the first time. (because im not fucking rich enough to get a shitty windows liscense under this.) Click **More info → Run anyway**.
 
@@ -21,6 +21,14 @@ npm install
 npm start        # run it
 npm run dist     # build the installers and zips into dist/
 ```
+
+## Releasing
+
+1. Bump `version` in `package.json` and run `npm run dist`.
+2. Make a GitHub release tagged `v<version>` (e.g. `v1.1.5`), not a draft or pre-release.
+3. Upload everything in `dist/installer/` (the updater needs `latest.yml`, the `.exe` and the `.blockmap`) and the zip from `dist/portable/`.
+
+Installed copies pick it up the next time they start.
 
 ## License
 
