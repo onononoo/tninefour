@@ -1,0 +1,28 @@
+<!doctype html>
+<!-- tninefour — Copyright (C) 2026 kaiklund INC. GPL-3.0-or-later, see LICENSE. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'">
+<title>tninefour</title>
+<link rel="stylesheet" href="node_modules/@highlightjs/cdn-assets/styles/github.min.css" media="(prefers-color-scheme: light)">
+<link rel="stylesheet" href="node_modules/@highlightjs/cdn-assets/styles/github-dark.min.css" media="(prefers-color-scheme: dark)">
+<style>
+  :root { --bg: #fff; --fg: #1f2328; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #0d1117; --fg: #e6edf3; } }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; overflow: hidden; background: var(--bg); }
+  #hl, #ed { position: fixed; inset: 0; padding: 20px 24px; border: 0; white-space: pre; font: 15px/1.6 Consolas, ui-monospace, monospace; tab-size: 4; }
+  #hl { overflow: hidden; pointer-events: none; color: var(--fg); }
+  #hl code { display: block; font: inherit; }
+  #ed { overflow: auto; resize: none; outline: none; background: transparent; color: transparent; caret-color: var(--fg); }
+  #ed::selection { background: rgba(84, 174, 255, .3); color: transparent; }
+</style>
+</head>
+<body>
+<pre id="hl" aria-hidden="true"><code></code></pre>
+<textarea id="ed" spellcheck="false" aria-label="Editor" autofocus></textarea>
+<script src="node_modules/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="renderer.js"></script>
+</body>
+</html>
