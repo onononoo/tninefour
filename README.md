@@ -7,7 +7,7 @@ A simple, open source text editor for Windows that detects what language you're 
 - **Installer:** run `tninefour Setup <version>.exe` and follow the steps.
 - **Portable:** run `tninefour Portable <version>.exe`. Nothing is installed, so it can live anywhere, like a USB stick.
 
-Windows may say "Windows protected your PC" the first time. Click **More info → Run anyway**.
+Windows may say "Windows protected your PC" the first time. (because im not fucking rich enough to get a shitty windows liscense under this.) Click **More info → Run anyway**.
 
 - **File** menu: New (Ctrl+N), Open (Ctrl+O), Save (Ctrl+S), Save As (Ctrl+Shift+S)
 - The detected language is shown in the window title, and Save suggests its file extension (`.py`, `.cpp`, `.html`, …)
