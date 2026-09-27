@@ -28,11 +28,16 @@ ipcMain.handle('initial', () => {
   return arg ? open(path.resolve(arg)) : null;
 });
 ipcMain.handle('open', () => open());
-ipcMain.handle('save', async (e, text, saveAs, ext) => {
+ipcMain.handle('save', async (e, text, saveAs, ext, lang) => {
   if (saveAs || !filePath) {
-    // Suggest the current name with the extension for the detected language.
+    // Suggest the current name with the extension for the detected language, and put that
+    // language first in "Save as type" so the dialog doesn't default to All Files.
     const p = filePath ? path.parse(filePath) : { dir: '', name: 'untitled' };
-    const r = await dialog.showSaveDialog(win, { defaultPath: path.join(p.dir, `${p.name}.${ext}`) });
+    const type = ext === 'html' || ext === 'xml' ? ext.toUpperCase() : labelFor(lang); // hljs calls both "HTML, XML"
+    const r = await dialog.showSaveDialog(win, {
+      defaultPath: path.join(p.dir, `${p.name}.${ext}`),
+      filters: [{ name: type, extensions: [ext] }, { name: 'All Files', extensions: ['*'] }],
+    });
     if (r.canceled) return null;
     filePath = r.filePath;
   }
@@ -46,9 +51,10 @@ const send = (cmd, arg) => win.webContents.send('menu', cmd, arg);
 
 // Syntax menu: "Auto detect" plus every bundled language, sorted by display name.
 // Radio items only group while adjacent, so there's no separator after Auto.
+const labelFor = id => id === 'php' ? 'PHP' : hljs.getLanguage(id).name;
 const languages = hljs.listLanguages()
   .filter(id => id !== 'php-template' && id !== 'python-repl') // variants of PHP / Python
-  .map(id => ({ id, label: id === 'php' ? 'PHP' : hljs.getLanguage(id).name }))
+  .map(id => ({ id, label: labelFor(id) }))
   .sort((a, b) => a.label.localeCompare(b.label));
 const syntaxMenu = [
   { id: 'syntax-auto', label: 'Auto detect', type: 'radio', checked: true, click: () => send('syntax', null) },

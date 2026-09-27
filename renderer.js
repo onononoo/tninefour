@@ -61,7 +61,7 @@ const commands = {
   async save(saveAs) {
     clearTimeout(detectTimer);
     detect(); // don't save with a stale guess if typing just stopped
-    const n = await api.save(ed.value, saveAs, ext());
+    const n = await api.save(ed.value, saveAs, ext(), lang);
     if (n) { name = n; setDirty(false); }
   },
   saveAs() { return commands.save(true); },
