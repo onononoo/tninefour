@@ -1,6 +1,6 @@
 {
   "name": "tninefour",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "tninefour",
   "author": "kaiklund INC.",
   "license": "GPL-3.0-or-later",
@@ -18,7 +18,8 @@
       "preload.js",
       "renderer.js",
       "index.html",
-      "LICENSE"
+      "LICENSE",
+      "icon.ico"
     ],
     "win": {
       "target": [
@@ -34,7 +35,8 @@
     },
     "portable": {
       "artifactName": "portable/${productName} Portable ${version}.${ext}"
-    }
+    },
+    "icon": "icon.ico"
   },
   "dependencies": {
     "@highlightjs/cdn-assets": "^11.12.0"

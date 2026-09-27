@@ -4,6 +4,7 @@ const { app, BrowserWindow, Menu, dialog, ipcMain, nativeTheme } = require('elec
 const fs = require('fs/promises');
 const path = require('path');
 const hljs = require('@highlightjs/cdn-assets/highlight.min.js');
+const icon = path.join(__dirname, 'icon.ico'); // made by build.ps1 from "images and webpages/icon.png"
 
 // The main process owns the current file path, so the page can only write
 // to files the user picked.
@@ -76,6 +77,7 @@ app.whenReady().then(() => {
     { label: '&Help', submenu: [
       { label: 'About tninefour', click: () => dialog.showMessageBox(win, {
         title: 'About tninefour',
+        icon,
         message: `tninefour ${app.getVersion()}`,
         detail: 'Copyright (C) 2026 kaiklund INC.\nFree software under the GNU General Public License v3.',
       }) },
@@ -85,6 +87,7 @@ app.whenReady().then(() => {
   win = new BrowserWindow({
     width: 1000,
     height: 700,
+    icon,
     backgroundColor: nativeTheme.shouldUseDarkColors ? '#0d1117' : '#ffffff',
     webPreferences: { preload: path.join(__dirname, 'preload.js') },
   });
