@@ -10,7 +10,8 @@ A simple, open source text editor for Windows that detects what language you're 
 Windows may say "Windows protected your PC" the first time. Click **More info → Run anyway**.
 
 - **File** menu: New (Ctrl+N), Open (Ctrl+O), Save (Ctrl+S), Save As (Ctrl+Shift+S)
-- The detected language is shown in the window title
+- The detected language is shown in the window title, and Save suggests its file extension (`.py`, `.cpp`, `.html`, …)
+- **Syntax** menu: pick the language yourself, or go back to **Auto detect**
 - Tab indents; press Esc then Tab to move focus out of the editor
 
 ## Build from source

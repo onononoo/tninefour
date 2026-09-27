@@ -3,6 +3,7 @@
 const { app, BrowserWindow, Menu, dialog, ipcMain, nativeTheme } = require('electron');
 const fs = require('fs/promises');
 const path = require('path');
+const hljs = require('@highlightjs/cdn-assets/highlight.min.js');
 
 // The main process owns the current file path, so the page can only write
 // to files the user picked.
@@ -16,27 +17,43 @@ async function open(p) {
   }
   const text = await fs.readFile(p, 'utf8');
   filePath = p;
+  autoSyntax();
   return { name: path.basename(p), text };
 }
+// A new or opened file goes back to auto-detect (the page resets itself in load()).
+const autoSyntax = () => { Menu.getApplicationMenu().getMenuItemById('syntax-auto').checked = true; };
 
 ipcMain.handle('initial', () => {
   const arg = process.argv.slice(app.isPackaged ? 1 : 2).find(a => !a.startsWith('-') && a !== '.');
   return arg ? open(path.resolve(arg)) : null;
 });
 ipcMain.handle('open', () => open());
-ipcMain.handle('save', async (e, text, saveAs) => {
+ipcMain.handle('save', async (e, text, saveAs, ext) => {
   if (saveAs || !filePath) {
-    const r = await dialog.showSaveDialog(win, { defaultPath: filePath || 'untitled.txt' });
+    // Suggest the current name with the extension for the detected language.
+    const p = filePath ? path.parse(filePath) : { dir: '', name: 'untitled' };
+    const r = await dialog.showSaveDialog(win, { defaultPath: path.join(p.dir, `${p.name}.${ext}`) });
     if (r.canceled) return null;
     filePath = r.filePath;
   }
   await fs.writeFile(filePath, text);
   return path.basename(filePath);
 });
-ipcMain.on('new', () => { filePath = null; });
+ipcMain.on('new', () => { filePath = null; autoSyntax(); });
 ipcMain.on('dirty', (e, d) => { dirty = d; });
 
-const send = cmd => win.webContents.send('menu', cmd);
+const send = (cmd, arg) => win.webContents.send('menu', cmd, arg);
+
+// Syntax menu: "Auto detect" plus every bundled language, sorted by display name.
+// Radio items only group while adjacent, so there's no separator after Auto.
+const languages = hljs.listLanguages()
+  .filter(id => id !== 'php-template' && id !== 'python-repl') // variants of PHP / Python
+  .map(id => ({ id, label: id === 'php' ? 'PHP' : hljs.getLanguage(id).name }))
+  .sort((a, b) => a.label.localeCompare(b.label));
+const syntaxMenu = [
+  { id: 'syntax-auto', label: 'Auto detect', type: 'radio', checked: true, click: () => send('syntax', null) },
+  ...languages.map(({ id, label }) => ({ label, type: 'radio', click: () => send('syntax', id) })),
+];
 
 app.whenReady().then(() => {
   Menu.setApplicationMenu(Menu.buildFromTemplate([
@@ -49,6 +66,7 @@ app.whenReady().then(() => {
       { role: 'quit' },
     ] },
     { role: 'editMenu' },
+    { label: '&Syntax', submenu: syntaxMenu },
     { label: '&Help', submenu: [
       { label: 'About tninefour', click: () => dialog.showMessageBox(win, {
         title: 'About tninefour',

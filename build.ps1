@@ -3,7 +3,8 @@
 $ErrorActionPreference = 'Stop'
 $v = (Get-Content package.json -Raw | ConvertFrom-Json).version
 
-# NSIS can't create its output subfolder itself.
+# Start clean so old versions don't get shipped by mistake. NSIS can't create its output subfolder itself.
+if (Test-Path dist) { Remove-Item -Recurse -Force dist }
 New-Item -ItemType Directory -Force dist/installer, dist/portable | Out-Null
 npx electron-builder --win
 if ($LASTEXITCODE) { exit $LASTEXITCODE }
