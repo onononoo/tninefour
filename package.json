@@ -7,7 +7,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "dist": "node -e \"for (const d of ['installer', 'portable']) fs.mkdirSync('dist/' + d, { recursive: true })\" && electron-builder --win"
+    "dist": "powershell -NoProfile -ExecutionPolicy Bypass -File build.ps1"
   },
   "build": {
     "appId": "com.kaiklund.tninefour",

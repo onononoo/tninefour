@@ -4,8 +4,10 @@ A simple, open source text editor for Windows that detects what language you're 
 
 ## Install
 
-- `dist/installer/tninefour Setup 1.0.0.exe` installs the app.
-- `dist/portable/tninefour Portable 1.0.0.exe` runs without installing.
+- **Installer:** run `tninefour Setup <version>.exe` and follow the steps.
+- **Portable:** run `tninefour Portable <version>.exe`. Nothing is installed, so it can live anywhere, like a USB stick.
+
+Windows may say "Windows protected your PC" the first time. Click **More info → Run anyway**.
 
 - **File** menu: New (Ctrl+N), Open (Ctrl+O), Save (Ctrl+S), Save As (Ctrl+Shift+S)
 - The detected language is shown in the window title
@@ -16,7 +18,7 @@ A simple, open source text editor for Windows that detects what language you're 
 ```
 npm install
 npm start        # run it
-npm run dist     # build the installers into dist/
+npm run dist     # build the installers and zips into dist/
 ```
 
 ## License
