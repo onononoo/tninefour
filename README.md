@@ -4,7 +4,8 @@ A simple, open source text editor for Windows that detects what language you're 
 
 ## Install
 
-Run `tninefour Setup 1.0.0.exe` (installer) or `tninefour 1.0.0.exe` (portable, no install).
+- `dist/installer/tninefour Setup 1.0.0.exe` installs the app.
+- `dist/portable/tninefour Portable 1.0.0.exe` runs without installing.
 
 - **File** menu: New (Ctrl+N), Open (Ctrl+O), Save (Ctrl+S), Save As (Ctrl+Shift+S)
 - The detected language is shown in the window title
