@@ -1,0 +1,81 @@
+<!doctype html>
+<!-- tninefour — Copyright (C) 2026 kaiklund INC. GPL-3.0-or-later, see LICENSE. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>tninefour — download</title>
+<meta name="description" content="tninefour: a simple text editor for Windows that highlights whatever language you write.">
+<link rel="icon" href="icon.png">
+<style>
+  /* Same palette and type as the app (GitHub light/dark + Consolas). */
+  :root { --bg: #fff; --fg: #1f2328; --dim: #59636e; --line: #d0d7de; --hover: #f6f8fa;
+          --kw: #cf222e; --fn: #8250df; --str: #0a3069; --com: #59636e; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0d1117; --fg: #e6edf3; --dim: #9198a1; --line: #30363d; --hover: #161b22;
+            --kw: #ff7b72; --fn: #d2a8ff; --str: #a5d6ff; --com: #9198a1; }
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { min-height: 100%; }
+  body { display: grid; place-items: center; min-height: 100vh; padding: 24px 16px;
+         background: var(--bg); color: var(--fg); font: 15px/1.6 Consolas, ui-monospace, monospace; }
+  main { width: 100%; max-width: 560px; }
+  h1 { display: flex; align-items: center; gap: 12px; font-size: 28px; font-weight: 600; }
+  h1 img { height: 36px; }
+  pre { margin: 20px 0 32px; font: inherit; white-space: pre-wrap; }
+  .kw { color: var(--kw); } .fn { color: var(--fn); } .str { color: var(--str); } .com { color: var(--com); }
+  h2 { font-size: 15px; font-weight: 400; color: var(--dim); margin-bottom: 12px; }
+  .choices { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 480px) { .choices { grid-template-columns: 1fr; } }
+  a.btn { display: block; padding: 14px 16px; border: 1px solid var(--line); border-radius: 6px;
+          color: inherit; text-decoration: none; }
+  a.btn:hover { background: var(--hover); border-color: var(--dim); }
+  a.btn:focus-visible { outline: 2px solid var(--fn); outline-offset: 2px; }
+  a.btn b { display: block; font-weight: 600; }
+  a.btn span { font-size: 13px; color: var(--dim); }
+  footer { margin-top: 32px; font-size: 12px; color: var(--dim); }
+  footer a { color: inherit; }
+</style>
+</head>
+<body>
+<main>
+  <h1><img src="icon.png" alt="">tninefour</h1>
+<pre><span class="com">// a simple text editor for Windows</span>
+<span class="kw">function</span> <span class="fn">write</span>(anything) {
+  <span class="kw">return</span> <span class="str">"highlighted automatically"</span>;
+}</pre>
+
+  <h2>Which version do you want? <span id="version">v1.1.5</span></h2>
+  <div class="choices">
+    <!-- Fallback links; the script below swaps in the latest release's files. -->
+    <a class="btn" id="setup" href="https://github.com/onononoo/tninefour/releases/download/v1.1.5/tninefour-setup-1.1.5.zip">
+      <b>Setup</b>
+      <span>Installs tninefour and keeps it up to date.</span>
+    </a>
+    <a class="btn" id="portable" href="https://github.com/onononoo/tninefour/releases/download/v1.1.5/tninefour-portable-1.1.5.zip">
+      <b>Portable</b>
+      <span>No install. Run it from anywhere, like a USB stick.</span>
+    </a>
+  </div>
+
+  <footer>
+    © 2026 kaiklund INC. · free software under the GPL v3 ·
+    <a href="https://github.com/onononoo/tninefour">source</a> ·
+    <a href="https://github.com/onononoo/tninefour/releases">all releases</a>
+  </footer>
+</main>
+<script>
+  // Point both buttons at the newest GitHub release, so new releases need no edit here.
+  fetch('https://api.github.com/repos/onononoo/tninefour/releases/latest')
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(release => {
+      for (const id of ['setup', 'portable']) {
+        const zip = release.assets.find(a => new RegExp(id + '.*\\.zip$', 'i').test(a.name));
+        if (zip) document.getElementById(id).href = zip.browser_download_url;
+      }
+      document.getElementById('version').textContent = release.tag_name;
+    })
+    .catch(() => {}); // offline or rate-limited: keep the links above
+</script>
+</body>
+</html>
